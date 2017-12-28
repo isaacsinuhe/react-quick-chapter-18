@@ -1,31 +1,33 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { RouteComponentProps } from 'react-router';
+import { ProductsType } from '../index';
 
-export interface ProductRouteParams {id: string}
-export interface ProductProps extends RouteComponentProps<ProductRouteParams> {}
+export interface ProductRouteParams { id: number }
+export interface ProductProps extends RouteComponentProps<ProductRouteParams> {
+    products: ProductsType
+    addToCart: (id: number) => void
+}
 export interface ProductState {}
 export class Product extends React.Component <ProductProps, ProductState> {
-    constructor(props: ProductProps) {
-        super(props)
-    }
-    handleBuy = (event) => {
-        this.props.route.addToCart(this.props.params.id)
+    handleBuy = (event: React.SyntheticEvent<HTMLAnchorElement>) => {
+        this.props.addToCart(this.props.match.params.id)
     }
     render() {
         return (
             <div>
-                <img src={this.props.route.products[this.props.params.id].src} style={{ height: '80%' }} />
-                <p>{this.props.route.products[this.props.params.id].title}</p>
+                <img src={this.props.products[this.props.match.params.id].src} style={{ height: '80%' }} />
+                <p>{this.props.products[this.props.match.params.id].title}</p>
                 <Link
                     to={{
                         pathname: `/cart`,
-                        state: { productId: this.props.params.id }
+                        state: { productId: this.props.match.params.id }
                     }}
                     onClick={this.handleBuy}
-                    className="btn btn-primary">
+                    className="btn btn-primary"
+                >
                     Buy
-        </Link>
+                </Link>
             </div>
         )
     }
