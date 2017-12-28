@@ -13,7 +13,7 @@ app.use(morgan('dev'))
 
 app.all('/*', (req, res, next) => {
     console.log('Reading the main route through http request, sending index.html');
-    res.sendFile(path.join(__dirname, '..', 'build', 'index.html'))
+    res.status(200).send({test: 'This data comes from the server'})
 })
 
 const server = http.createServer(app)
